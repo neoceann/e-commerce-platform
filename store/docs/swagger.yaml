@@ -1,0 +1,901 @@
+basePath: /api/v1
+definitions:
+  domain.Category:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.Client:
+    properties:
+      address_id:
+        type: string
+      birthday:
+        type: string
+      client_name:
+        type: string
+      client_surname:
+        type: string
+      gender:
+        type: string
+      id:
+        type: string
+      registration_date:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.Image:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      image_data:
+        items:
+          type: integer
+        type: array
+      product_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.Product:
+    properties:
+      available_stock:
+        type: integer
+      category_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      last_available_update_date:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      supplier_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.Supplier:
+    properties:
+      address_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  dto.CreateCategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  dto.CreateClientRequest:
+    properties:
+      address_id:
+        type: string
+      birthday:
+        type: string
+      client_name:
+        type: string
+      client_surname:
+        type: string
+      gender:
+        type: string
+    required:
+    - client_name
+    - client_surname
+    type: object
+  dto.CreateImageRequest:
+    properties:
+      image_data:
+        type: string
+      product_id:
+        type: string
+    required:
+    - image_data
+    - product_id
+    type: object
+  dto.CreateProductRequest:
+    properties:
+      available_stock:
+        type: integer
+      category_id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      supplier_id:
+        type: string
+    required:
+    - available_stock
+    - category_id
+    - name
+    - price
+    - supplier_id
+    type: object
+  dto.CreateSupplierRequest:
+    properties:
+      address_id:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+    required:
+    - name
+    type: object
+  dto.DecreaseProductStockRequest:
+    properties:
+      decreasevalue:
+        type: integer
+    type: object
+  dto.IncreaseProductStockRequest:
+    properties:
+      increasevalue:
+        type: integer
+    type: object
+  dto.UpdateAddressParamsRequest:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      street:
+        type: string
+    required:
+    - city
+    - country
+    - street
+    type: object
+  dto.UpdateImageRequest:
+    properties:
+      image_data:
+        type: string
+    required:
+    - image_data
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для магазина бытовой техники
+  title: Appliance Store API
+  version: "1.0"
+paths:
+  /addresses/{id}:
+    get:
+      parameters:
+      - description: UUID адреса
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Данные получены успешно
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить адрес по ID
+      tags:
+      - Адреса
+  /categories/:
+    get:
+      responses:
+        "200":
+          description: Данные успешно получены
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список всех категорий
+      tags:
+      - Категории
+    post:
+      parameters:
+      - description: Название категории
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCategoryRequest'
+      responses:
+        "201":
+          description: Категория создана
+          schema:
+            $ref: '#/definitions/domain.Category'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание категории
+      tags:
+      - Категории
+  /clients/:
+    post:
+      description: 'Добавляет нового клиента в систему. Формат поля "birthday": "1994-01-02T00:00:00Z",'
+      parameters:
+      - description: Данные клиента
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateClientRequest'
+      responses:
+        "201":
+          description: Клиент создан
+          schema:
+            $ref: '#/definitions/domain.Client'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание клиента
+      tags:
+      - Клиенты
+  /clients/{id}:
+    delete:
+      description: Удаление клиента по ID
+      parameters:
+      - description: UUID клиента
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Клиент удален
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удаление клиента
+      tags:
+      - Клиенты
+  /clients/{id}/address:
+    patch:
+      parameters:
+      - description: UUID клиента
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Новый адрес
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAddressParamsRequest'
+      responses:
+        "200":
+          description: Данные успешно обновлены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновить адрес клиента
+      tags:
+      - Клиенты
+  /clients/by_name:
+    get:
+      description: Имя и фамилия обязательны
+      parameters:
+      - description: Имя
+        in: query
+        name: client_name
+        required: true
+        type: string
+      - description: Фамилия
+        in: query
+        name: client_surname
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Данные успешно получены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список клиентов по имени и фамилии
+      tags:
+      - Клиенты
+  /clients/by_page:
+    get:
+      description: При отсутствии поля Limit будет выдан весь список целиком
+      parameters:
+      - description: Лимит записей
+        in: query
+        name: limit
+        type: string
+      - description: Смещение
+        in: query
+        name: offset
+        type: string
+      responses:
+        "200":
+          description: Данные успешно получены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список клиентов с пагинацией
+      tags:
+      - Клиенты
+  /images/:
+    post:
+      description: Добавляет новое изображение в систему
+      parameters:
+      - description: Данные изображение
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateImageRequest'
+      responses:
+        "201":
+          description: Изображение создано
+          schema:
+            $ref: '#/definitions/domain.Image'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание изображения
+      tags:
+      - Изображения товаров
+  /images/{id}:
+    delete:
+      description: Удаление изображение по ID
+      parameters:
+      - description: UUID изображения
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Изображение удалено
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удаление изображение
+      tags:
+      - Изображения товаров
+    get:
+      parameters:
+      - description: UUID изображения
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Изображение успешно получено
+          schema:
+            type: file
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить изображение по его ID
+      tags:
+      - Изображения товаров
+  /images/{id}/update:
+    patch:
+      parameters:
+      - description: UUID изображения
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Новое изображение (base64)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateImageRequest'
+      responses:
+        "200":
+          description: Данные успешно обновлены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновить изображение
+      tags:
+      - Изображения товаров
+  /images/product/{id}:
+    get:
+      description: Для скачивания требуется запрашивать каждый ID отдельно (GET /images/{id})
+      parameters:
+      - description: UUID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Данные успешно получены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список изображений по ID товара
+      tags:
+      - Изображения товаров
+  /products/:
+    post:
+      parameters:
+      - description: Данные товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateProductRequest'
+      responses:
+        "201":
+          description: Товар создан
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание товара
+      tags:
+      - Товары
+  /products/{id}:
+    delete:
+      parameters:
+      - description: UUID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Товар удален
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удаление товара по ID
+      tags:
+      - Товары
+    get:
+      parameters:
+      - description: UUID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Данные получены успешно
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить товар по ID
+      tags:
+      - Товары
+  /products/{id}/decrease:
+    patch:
+      parameters:
+      - description: UUID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Количество
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DecreaseProductStockRequest'
+      responses:
+        "200":
+          description: Уменьшено успешно
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Уменьшение количества товара
+      tags:
+      - Товары
+  /products/{id}/increase:
+    patch:
+      parameters:
+      - description: UUID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Количество
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.IncreaseProductStockRequest'
+      responses:
+        "200":
+          description: Добавлено успешно
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Добавление количества товара
+      tags:
+      - Товары
+  /products/available:
+    get:
+      responses:
+        "200":
+          description: Данные успешно получены
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список доступных товаров
+      tags:
+      - Товары
+  /suppliers/:
+    get:
+      responses:
+        "200":
+          description: Данные успешно получены
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить список всех поставщиков
+      tags:
+      - Поставщики
+    post:
+      description: Добавляет нового поставщика в систему
+      parameters:
+      - description: Данные поставщика
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateSupplierRequest'
+      responses:
+        "201":
+          description: Поставщик создан
+          schema:
+            $ref: '#/definitions/domain.Supplier'
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание поставщика
+      tags:
+      - Поставщики
+  /suppliers/{id}:
+    delete:
+      description: Удаление поставщика по ID
+      parameters:
+      - description: UUID поставщика
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Поставщик удален
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удаление поставщика
+      tags:
+      - Поставщики
+    get:
+      parameters:
+      - description: UUID поставщика
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Данные успешно получены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Данные не найдены
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить поставщика по ID
+      tags:
+      - Поставщики
+  /suppliers/{id}/address:
+    patch:
+      parameters:
+      - description: UUID поставщика
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Новый адрес
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAddressParamsRequest'
+      responses:
+        "200":
+          description: Данные успешно обновлены
+        "400":
+          description: Неверный запрос
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновить адрес поставщика
+      tags:
+      - Поставщики
+swagger: "2.0"

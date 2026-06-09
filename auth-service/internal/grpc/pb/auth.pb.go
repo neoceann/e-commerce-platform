@@ -593,12 +593,12 @@ const file_auth_service_proto_auth_proto_rawDesc = "" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x14\n" +
-	"\x05error\x18\x05 \x01(\tR\x05error2\xda\x02\n" +
+	"\x05error\x18\x05 \x01(\tR\x05error2\xdc\x02\n" +
 	"\vAuthService\x125\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x12.auth.AuthResponse\x12/\n" +
 	"\x05Login\x12\x12.auth.LoginRequest\x1a\x12.auth.AuthResponse\x12K\n" +
-	"\x0eChangePassword\x12\x1b.auth.ChangePasswordRequest\x1a\x1c.auth.ChangePasswordResponse\x12L\n" +
-	"\rResetPassword\x12\x1c.auth.RecoverPasswordRequest\x1a\x1d.auth.RecoverPasswordResponse\x12H\n" +
+	"\x0eChangePassword\x12\x1b.auth.ChangePasswordRequest\x1a\x1c.auth.ChangePasswordResponse\x12N\n" +
+	"\x0fRecoverPassword\x12\x1c.auth.RecoverPasswordRequest\x1a\x1d.auth.RecoverPasswordResponse\x12H\n" +
 	"\rValidateToken\x12\x1a.auth.ValidateTokenRequest\x1a\x1b.auth.ValidateTokenResponseB\x1fZ\x1dauth-service/internal/grpc/pbb\x06proto3"
 
 var (
@@ -629,12 +629,12 @@ var file_auth_service_proto_auth_proto_depIdxs = []int32{
 	0, // 0: auth.AuthService.Register:input_type -> auth.RegisterRequest
 	1, // 1: auth.AuthService.Login:input_type -> auth.LoginRequest
 	2, // 2: auth.AuthService.ChangePassword:input_type -> auth.ChangePasswordRequest
-	3, // 3: auth.AuthService.ResetPassword:input_type -> auth.RecoverPasswordRequest
+	3, // 3: auth.AuthService.RecoverPassword:input_type -> auth.RecoverPasswordRequest
 	4, // 4: auth.AuthService.ValidateToken:input_type -> auth.ValidateTokenRequest
 	5, // 5: auth.AuthService.Register:output_type -> auth.AuthResponse
 	5, // 6: auth.AuthService.Login:output_type -> auth.AuthResponse
 	6, // 7: auth.AuthService.ChangePassword:output_type -> auth.ChangePasswordResponse
-	7, // 8: auth.AuthService.ResetPassword:output_type -> auth.RecoverPasswordResponse
+	7, // 8: auth.AuthService.RecoverPassword:output_type -> auth.RecoverPasswordResponse
 	8, // 9: auth.AuthService.ValidateToken:output_type -> auth.ValidateTokenResponse
 	5, // [5:10] is the sub-list for method output_type
 	0, // [0:5] is the sub-list for method input_type

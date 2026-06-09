@@ -11,7 +11,7 @@ service AuthService {
     
     rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
     
-    rpc ResetPassword(RecoverPasswordRequest) returns (RecoverPasswordResponse);
+    rpc RecoverPassword(RecoverPasswordRequest) returns (RecoverPasswordResponse);
     
     rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
 }

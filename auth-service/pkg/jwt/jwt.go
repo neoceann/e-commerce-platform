@@ -11,11 +11,12 @@ import (
 type Claims struct {
     UserID string `json:"user_id"`
     Email  string `json:"email"`
+    Role string `json:"role"`
     jwt.RegisteredClaims
 }
 
 type JWTService interface {
-    GenerateToken(userID, email string) (string, error)
+    GenerateToken(userID, email, role string) (string, error)
     ValidateToken(tokenString string) (*Claims, error)
 }
 
@@ -31,10 +32,11 @@ func NewJWTService(secret string, expiration time.Duration) JWTService {
     }
 }
 
-func (s *jwtService) GenerateToken(userID, email string) (string, error) {
+func (s *jwtService) GenerateToken(userID, email, role string) (string, error) {
     claims := &Claims{
         UserID: userID,
         Email:  email,
+        Role: role,
         RegisteredClaims: jwt.RegisteredClaims{
             ExpiresAt: jwt.NewNumericDate(time.Now().Add(s.expiration)),
         },

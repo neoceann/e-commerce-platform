@@ -12,9 +12,9 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (email, first_name, last_name, phone, password_hash)
-VALUES ($1, $2, $3, $4, $5)
-RETURNING id, email, first_name, last_name, phone, password_hash, created_at, updated_at
+INSERT INTO users (email, first_name, last_name, phone, user_role, password_hash)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, email, first_name, last_name, phone, user_role, password_hash, created_at, updated_at
 `
 
 type CreateUserParams struct {
@@ -22,6 +22,7 @@ type CreateUserParams struct {
 	FirstName    string `json:"first_name"`
 	LastName     string `json:"last_name"`
 	Phone        string `json:"phone"`
+	UserRole     string `json:"user_role"`
 	PasswordHash string `json:"password_hash"`
 }
 
@@ -31,6 +32,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.FirstName,
 		arg.LastName,
 		arg.Phone,
+		arg.UserRole,
 		arg.PasswordHash,
 	)
 	var i User
@@ -40,6 +42,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.FirstName,
 		&i.LastName,
 		&i.Phone,
+		&i.UserRole,
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -48,8 +51,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, email, first_name, last_name, phone, password_hash, created_at, updated_at
-FROM users
+SELECT id, email, first_name, last_name, phone, user_role, password_hash, created_at, updated_at FROM users
 WHERE email = $1
 `
 
@@ -62,6 +64,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.FirstName,
 		&i.LastName,
 		&i.Phone,
+		&i.UserRole,
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -70,8 +73,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, email, first_name, last_name, phone, password_hash, created_at, updated_at
-FROM users
+SELECT id, email, first_name, last_name, phone, user_role, password_hash, created_at, updated_at FROM users
 WHERE id = $1
 `
 
@@ -84,6 +86,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.FirstName,
 		&i.LastName,
 		&i.Phone,
+		&i.UserRole,
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,

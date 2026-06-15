@@ -1,12 +1,12 @@
 package dto
 
 import (
+	"encoding/base64"
+	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/repository/db"
 	"time"
-	"fmt"
-	"github.com/google/uuid"
-	"encoding/base64"
 )
 
 type ImageResponse struct {
@@ -18,7 +18,7 @@ type ImageResponse struct {
 
 func ImageFromDbToDomain(i db.Image) *domain.Image {
 	return &domain.Image{
-		ID: i.ID,
+		ID:        i.ID,
 		ImageData: i.ImageData,
 		ProductID: i.ProductID,
 		CreatedAt: i.CreatedAt,
@@ -28,7 +28,7 @@ func ImageFromDbToDomain(i db.Image) *domain.Image {
 
 func ImageToResponce(i *domain.Image) *ImageResponse {
 	return &ImageResponse{
-		ID: i.ID,
+		ID:        i.ID,
 		ProductID: i.ProductID,
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
@@ -36,7 +36,7 @@ func ImageToResponce(i *domain.Image) *ImageResponse {
 }
 
 type CreateImageRequest struct {
-	ImageData string    `json:"image_data" validate:"required"`
+	ImageData string     `json:"image_data" validate:"required"`
 	ProductID *uuid.UUID `json:"product_id" validate:"required"`
 }
 
@@ -46,28 +46,28 @@ type CreateImageDataByte struct {
 }
 
 type UpdateImageRequest struct {
-	ImageData string    `json:"image_data" validate:"required"`
+	ImageData string `json:"image_data" validate:"required"`
 }
 type UpdateImageDataByte struct {
 	ImageData []byte
 }
 
 func StringToBytes(imageData string) ([]byte, error) {
-    if imageData == "" {
-        return nil, fmt.Errorf("imageData required")
-    }
-    
-    data, err := base64.StdEncoding.DecodeString(imageData)
-    if err != nil {
-        data, err = base64.URLEncoding.DecodeString(imageData)
-        if err != nil {
-            return nil, fmt.Errorf("invalid base64 encoding: %w", err)
-        }
-    }
-    
-    if len(data) == 0 {
-        return nil, fmt.Errorf("image data is empty")
-    }
-    
-    return data, nil
+	if imageData == "" {
+		return nil, fmt.Errorf("imageData required")
+	}
+
+	data, err := base64.StdEncoding.DecodeString(imageData)
+	if err != nil {
+		data, err = base64.URLEncoding.DecodeString(imageData)
+		if err != nil {
+			return nil, fmt.Errorf("invalid base64 encoding: %w", err)
+		}
+	}
+
+	if len(data) == 0 {
+		return nil, fmt.Errorf("image data is empty")
+	}
+
+	return data, nil
 }

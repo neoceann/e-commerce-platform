@@ -2,16 +2,16 @@ package service
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/repository/address"
-	"github.com/google/uuid"
 )
 
 type AddressServiceImpl struct {
 	addressRepo repository.AddressRepository
 }
 
-func NewAddressService (r repository.AddressRepository) AddressService {
+func NewAddressService(r repository.AddressRepository) AddressService {
 	return &AddressServiceImpl{addressRepo: r}
 }
 

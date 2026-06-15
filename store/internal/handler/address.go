@@ -2,10 +2,10 @@ package handler
 
 import (
 	"errors"
-	"net/http"
-	"store/internal/service/address"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"net/http"
+	"store/internal/service/address"
 )
 
 type AddressHandler struct {
@@ -41,10 +41,10 @@ func (h *AddressHandler) GetAddressByID(w http.ResponseWriter, r *http.Request) 
 		if errors.Is(err, service.ErrAddrNotFound) {
 			writeError(w, http.StatusNotFound, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, product)
 }

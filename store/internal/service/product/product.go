@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"store/internal/dto"
-	"store/internal/domain"
 	"github.com/google/uuid"
+	"store/internal/domain"
+	"store/internal/dto"
 )
 
 type ProductService interface {

@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/db"
-	"github.com/google/uuid"
 )
 
 type AddressRepositoryImpl struct {

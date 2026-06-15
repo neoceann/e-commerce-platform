@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/client"
 	"strings"
-	"github.com/google/uuid"
 )
 
 type ClientServiceImpl struct {
@@ -34,8 +34,7 @@ func (s *ClientServiceImpl) CreateClient(ctx context.Context, request *dto.Creat
 	return client, nil
 }
 
-
-func (s *ClientServiceImpl)	DeleteClient(ctx context.Context, clientID uuid.UUID) error {
+func (s *ClientServiceImpl) DeleteClient(ctx context.Context, clientID uuid.UUID) error {
 	if clientID == uuid.Nil {
 		return ErrInvalidID
 	}
@@ -49,7 +48,7 @@ func (s *ClientServiceImpl)	DeleteClient(ctx context.Context, clientID uuid.UUID
 	return s.clientRepo.DeleteClient(ctx, clientID)
 }
 
-func (s *ClientServiceImpl)	GetClientsByFullName(ctx context.Context, request *dto.GetClientsByNameRequest) ([]*domain.Client, error) {
+func (s *ClientServiceImpl) GetClientsByFullName(ctx context.Context, request *dto.GetClientsByNameRequest) ([]*domain.Client, error) {
 	if strings.TrimSpace(request.Name) == "" {
 		return nil, fmt.Errorf("%w: client name is required", ErrInvalidClientData)
 	}
@@ -58,7 +57,6 @@ func (s *ClientServiceImpl)	GetClientsByFullName(ctx context.Context, request *d
 		return nil, fmt.Errorf("%w: client surname is required", ErrInvalidClientData)
 	}
 
-	
 	clients, err := s.clientRepo.GetClientsByFullName(ctx, request)
 
 	if err != nil {
@@ -72,7 +70,7 @@ func (s *ClientServiceImpl)	GetClientsByFullName(ctx context.Context, request *d
 	return clients, nil
 }
 
-func (s *ClientServiceImpl)	GetClientsWithPagination(ctx context.Context, request *dto.GetclientsWithPaginationRequest) ([]*domain.Client, error) {
+func (s *ClientServiceImpl) GetClientsWithPagination(ctx context.Context, request *dto.GetclientsWithPaginationRequest) ([]*domain.Client, error) {
 
 	if request.Limit == nil {
 		return s.clientRepo.GetAllClients(ctx)
@@ -105,7 +103,7 @@ func (s *ClientServiceImpl)	GetClientsWithPagination(ctx context.Context, reques
 	return clients, nil
 }
 
-func (s *ClientServiceImpl)	UpdateClientAddr(ctx context.Context, clientID uuid.UUID, request *dto.UpdateAddressParamsRequest) (*domain.Client, error) {
+func (s *ClientServiceImpl) UpdateClientAddr(ctx context.Context, clientID uuid.UUID, request *dto.UpdateAddressParamsRequest) (*domain.Client, error) {
 	if clientID == uuid.Nil {
 		return nil, ErrInvalidID
 	}
@@ -113,7 +111,7 @@ func (s *ClientServiceImpl)	UpdateClientAddr(ctx context.Context, clientID uuid.
 	if strings.TrimSpace(request.Country) == "" ||
 		strings.TrimSpace(request.City) == "" ||
 		strings.TrimSpace(request.Street) == "" {
-			return nil, ErrInvalidAddrData
+		return nil, ErrInvalidAddrData
 	}
 
 	_, err := s.clientRepo.GetClientByID(ctx, clientID)

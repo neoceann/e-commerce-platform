@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/db"
-	"github.com/google/uuid"
 )
 
 type ClientRepositoryImpl struct {
@@ -20,11 +20,11 @@ func NewClientRepository(q *db.Queries) ClientRepository {
 func (r *ClientRepositoryImpl) CreateClient(ctx context.Context, request *dto.CreateClientRequest) (*domain.Client, error) {
 
 	client, err := r.queries.CreateClient(ctx, db.CreateClientParams{
-		ClientName: request.ClientName,
+		ClientName:    request.ClientName,
 		ClientSurname: request.ClientSurname,
-		Birthday: request.Birthday,
-		Gender: request.Gender,
-		AddressID: request.AddressID})
+		Birthday:      request.Birthday,
+		Gender:        request.Gender,
+		AddressID:     request.AddressID})
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new client: %w", err)
@@ -32,7 +32,6 @@ func (r *ClientRepositoryImpl) CreateClient(ctx context.Context, request *dto.Cr
 
 	return dto.ClientFromDbToDomain(client), nil
 }
-
 
 func (r *ClientRepositoryImpl) DeleteClient(ctx context.Context, clientID uuid.UUID) error {
 	return r.queries.DeleteClient(ctx, clientID)
@@ -89,15 +88,14 @@ func (r *ClientRepositoryImpl) GetAllClients(ctx context.Context) ([]*domain.Cli
 func (r *ClientRepositoryImpl) UpdateClientAddr(ctx context.Context, clientID uuid.UUID, request *dto.UpdateAddressParamsRequest) (*domain.Client, error) {
 
 	newAddr, err := r.queries.CreateAddress(ctx, db.CreateAddressParams{Country: request.Country,
-													City: request.City,
-													Street: request.Street})
+		City:   request.City,
+		Street: request.Street})
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create address: %w", err)
 	}
 
 	client, err := r.queries.UpdateClientAddress(ctx, db.UpdateClientAddressParams{ID: clientID, AddressID: newAddr.ID})
-
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to update client address: %w", err)
@@ -107,7 +105,7 @@ func (r *ClientRepositoryImpl) UpdateClientAddr(ctx context.Context, clientID uu
 }
 
 func (r *ClientRepositoryImpl) GetClientByID(ctx context.Context, clientID uuid.UUID) (*domain.Client, error) {
-	
+
 	client, err := r.queries.GetClientByID(ctx, clientID)
 
 	if err != nil {

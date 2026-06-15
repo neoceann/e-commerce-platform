@@ -30,7 +30,6 @@ func (c *CategoryServiceImpl) CreateCategory(ctx context.Context, request *dto.C
 	return category, nil
 }
 
-
 func (c *CategoryServiceImpl) GetAllCategories(ctx context.Context) ([]*domain.Category, error) {
 	categories, err := c.clientRepo.GetAllCategories(ctx)
 

@@ -27,7 +27,7 @@ func NewCategoryHandler(categoryService service.CategoryService) *CategoryHandle
 // @Router       /categories/ [post]
 func (c *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateCategoryRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -39,11 +39,11 @@ func (c *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 		case errors.Is(err, service.ErrInvalidCategoryData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusCreated, category)
 }
 
@@ -55,9 +55,9 @@ func (c *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 func (c *CategoryHandler) GetAllCategories(w http.ResponseWriter, r *http.Request) {
 	categories, err := c.categoryService.GetAllCategories(r.Context())
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+		writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, categories)
 }

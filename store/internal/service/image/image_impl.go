@@ -28,9 +28,9 @@ func (r *ImageServiceImpl) CreateImage(ctx context.Context, request *dto.CreateI
 	imageData, err := dto.StringToBytes(request.ImageData)
 	log.Printf("Received image data size: %d bytes", len(imageData))
 
-    if err != nil {
-        return nil, fmt.Errorf("%w: %v", ErrInvalidImageData, err)
-    }
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrInvalidImageData, err)
+	}
 
 	image, err := r.imageRepo.CreateImage(ctx, &dto.CreateImageDataByte{ImageData: imageData, ProductID: request.ProductID})
 
@@ -41,7 +41,7 @@ func (r *ImageServiceImpl) CreateImage(ctx context.Context, request *dto.CreateI
 	return image, nil
 }
 
-func (r *ImageServiceImpl) UpdateImage(ctx context.Context, imageID uuid.UUID, request *dto.UpdateImageRequest) (*domain.Image, error){
+func (r *ImageServiceImpl) UpdateImage(ctx context.Context, imageID uuid.UUID, request *dto.UpdateImageRequest) (*domain.Image, error) {
 	if imageID == uuid.Nil {
 		return nil, ErrInvalidID
 	}
@@ -75,7 +75,7 @@ func (r *ImageServiceImpl) DeleteImageByID(ctx context.Context, imageID uuid.UUI
 	return r.imageRepo.DeleteImageByID(ctx, imageID)
 }
 
-func (r *ImageServiceImpl) GetImagesByProductID(ctx context.Context, productID uuid.UUID) ([]*domain.Image, error){
+func (r *ImageServiceImpl) GetImagesByProductID(ctx context.Context, productID uuid.UUID) ([]*domain.Image, error) {
 
 	if productID == uuid.Nil {
 		return nil, ErrInvalidID
@@ -94,13 +94,12 @@ func (r *ImageServiceImpl) GetImagesByProductID(ctx context.Context, productID u
 	return images, nil
 }
 
-func (r *ImageServiceImpl) GetImageByImageId(ctx context.Context, imageID uuid.UUID) (*domain.Image, error){
+func (r *ImageServiceImpl) GetImageByImageId(ctx context.Context, imageID uuid.UUID) (*domain.Image, error) {
 	if imageID == uuid.Nil {
 		return nil, ErrInvalidID
 	}
 
 	image, err := r.imageRepo.GetImageByImageId(ctx, imageID)
-
 
 	if image == nil {
 		return nil, ErrImageNotFound

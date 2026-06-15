@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/supplier"
 	"strings"
-	"github.com/google/uuid"
 )
 
 type SupplierServiceImpl struct {
@@ -81,7 +81,7 @@ func (s *SupplierServiceImpl) UpdateSupplierAddr(ctx context.Context, supplierID
 	if strings.TrimSpace(request.Country) == "" ||
 		strings.TrimSpace(request.City) == "" ||
 		strings.TrimSpace(request.Street) == "" {
-			return nil, ErrInvalidAddrData
+		return nil, ErrInvalidAddrData
 	}
 
 	_, err := s.SupplierRepo.GetSupplierByID(ctx, supplierID)

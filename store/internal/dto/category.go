@@ -1,10 +1,10 @@
 package dto
 
 import (
-	"time"
 	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/repository/db"
+	"time"
 )
 
 type CreateCategoryRequest struct {
@@ -20,8 +20,8 @@ type CategoryResponce struct {
 
 func CategoryFromDbToDomain(c db.Category) *domain.Category {
 	return &domain.Category{
-		ID: c.ID,
-		Name: c.Name,
+		ID:        c.ID,
+		Name:      c.Name,
 		CreatedAt: c.CreatedAt,
 		UpdatedAt: c.UpdatedAt,
 	}

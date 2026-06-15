@@ -22,7 +22,7 @@ RETURNING id, image_data, product_id, created_at, updated_at
 `
 
 type CreateImageParams struct {
-	ImageData []byte    `json:"image_data"`
+	ImageData []byte     `json:"image_data"`
 	ProductID *uuid.UUID `json:"product_id"`
 }
 

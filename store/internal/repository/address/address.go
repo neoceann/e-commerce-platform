@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"store/internal/domain"
 	"github.com/google/uuid"
+	"store/internal/domain"
 )
 
 type AddressRepository interface {

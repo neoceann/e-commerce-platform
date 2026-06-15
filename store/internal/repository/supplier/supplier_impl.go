@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/db"
-	"github.com/google/uuid"
 )
 
 type SupplierRepositoryImpl struct {
@@ -20,9 +20,9 @@ func NewSupplierRepository(q *db.Queries) SupplierRepository {
 func (r *SupplierRepositoryImpl) CreateSupplier(ctx context.Context, request *dto.CreateSupplierRequest) (*domain.Supplier, error) {
 
 	supplier, err := r.queries.CreateSupplier(ctx, db.CreateSupplierParams{
-		Name: request.Name,
+		Name:        request.Name,
 		PhoneNumber: request.PhoneNumber,
-		AddressID: request.AddressID})
+		AddressID:   request.AddressID})
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new supplier: %w", err)
@@ -30,7 +30,6 @@ func (r *SupplierRepositoryImpl) CreateSupplier(ctx context.Context, request *dt
 
 	return dto.SupplierFromDbToDomain(supplier), nil
 }
-
 
 func (r *SupplierRepositoryImpl) DeleteSupplier(ctx context.Context, supplierID uuid.UUID) error {
 	return r.queries.DeleteSupplier(ctx, supplierID)
@@ -55,15 +54,14 @@ func (r *SupplierRepositoryImpl) GetAllSuppliers(ctx context.Context) ([]*domain
 func (r *SupplierRepositoryImpl) UpdateSupplierAddr(ctx context.Context, supplierID uuid.UUID, request *dto.UpdateAddressParamsRequest) (*domain.Supplier, error) {
 
 	newAddr, err := r.queries.CreateAddress(ctx, db.CreateAddressParams{Country: request.Country,
-													City: request.City,
-													Street: request.Street})
+		City:   request.City,
+		Street: request.Street})
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create address: %w", err)
 	}
 
 	supplier, err := r.queries.UpdateSupplierAddress(ctx, db.UpdateSupplierAddressParams{ID: supplierID, AddressID: newAddr.ID})
-
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to update supplier address: %w", err)
@@ -73,7 +71,7 @@ func (r *SupplierRepositoryImpl) UpdateSupplierAddr(ctx context.Context, supplie
 }
 
 func (r *SupplierRepositoryImpl) GetSupplierByID(ctx context.Context, supplierID uuid.UUID) (*domain.Supplier, error) {
-	
+
 	supplier, err := r.queries.GetSupplierByID(ctx, supplierID)
 
 	if err != nil {

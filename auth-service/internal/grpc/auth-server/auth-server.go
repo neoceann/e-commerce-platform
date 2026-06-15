@@ -1,9 +1,9 @@
 package grpc
 
 import (
-	"context"
-	"auth-service/internal/service/auth"
 	"auth-service/internal/grpc/pb"
+	"auth-service/internal/service/auth"
+	"context"
 )
 
 type AuthServer struct {
@@ -18,17 +18,17 @@ func NewAuthServer(authService service.AuthService) *AuthServer {
 func (a *AuthServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.AuthResponse, error) {
 	response, err := a.authService.Register(ctx, &service.RegisterRequest{Email: req.Email,
 		FirstName: req.FirstName,
-		LastName: req.LastName,
-		Phone: req.Phone,
-		Password: req.Password})
+		LastName:  req.LastName,
+		Phone:     req.Phone,
+		Password:  req.Password})
 
 	if err != nil {
 		return &pb.AuthResponse{Success: false, Message: err.Error()}, nil
 	}
 
-	return &pb.AuthResponse{Success: true, 
-		Token: response.Token, 
-		UserId: response.UserId, 
+	return &pb.AuthResponse{Success: true,
+		Token:   response.Token,
+		UserId:  response.UserId,
 		Message: "Registration successful"}, nil
 }
 

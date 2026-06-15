@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"net/http"
 	"store/internal/dto"
 	"store/internal/service/supplier"
-	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 )
 
 type SupplierHandler struct {
@@ -31,7 +31,7 @@ func NewSupplierHandler(supplierService service.SupplierService) *SupplierHandle
 // @Router       /suppliers/ [post]
 func (h *SupplierHandler) CreateSupplier(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateSupplierRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -43,11 +43,11 @@ func (h *SupplierHandler) CreateSupplier(w http.ResponseWriter, r *http.Request)
 		case errors.Is(err, service.ErrInvalidSupplierData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusCreated, supplier)
 }
 
@@ -77,11 +77,11 @@ func (h *SupplierHandler) DeleteSupplier(w http.ResponseWriter, r *http.Request)
 		switch {
 		case errors.Is(err, service.ErrSupplierNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -97,10 +97,10 @@ func (h *SupplierHandler) DeleteSupplier(w http.ResponseWriter, r *http.Request)
 func (h *SupplierHandler) GetAllSuppliers(w http.ResponseWriter, r *http.Request) {
 	suppliers, err := h.supplierService.GetAllSuppliers(r.Context())
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+		writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, suppliers)
 
 }
@@ -118,21 +118,21 @@ func (h *SupplierHandler) GetSupplierByID(w http.ResponseWriter, r *http.Request
 
 	supplierID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid supplier id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid supplier id")
+		return
+	}
 
 	supplier, err := h.supplierService.GetSupplierByID(r.Context(), supplierID)
 	if err != nil {
 		if errors.Is(err, service.ErrSupplierNotFound) {
 			writeError(w, http.StatusNotFound, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, supplier)
 
 }
@@ -150,13 +150,13 @@ func (h *SupplierHandler) UpdateSupplierAddr(w http.ResponseWriter, r *http.Requ
 
 	supplierID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid supplier id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid supplier id")
+		return
+	}
 
 	var req dto.UpdateAddressParamsRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -168,11 +168,11 @@ func (h *SupplierHandler) UpdateSupplierAddr(w http.ResponseWriter, r *http.Requ
 		switch {
 		case errors.Is(err, service.ErrSupplierNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidAddrData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}

@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/db"
-	"github.com/google/uuid"
 )
 
 type ProductRepositoryImpl struct {
@@ -20,11 +20,11 @@ func NewProductRepository(q *db.Queries) ProductRepository {
 func (p *ProductRepositoryImpl) CreateProduct(ctx context.Context, request *dto.CreateProductRequest) (*domain.Product, error) {
 
 	product, err := p.queries.CreateProduct(ctx, db.CreateProductParams{
-		Name: request.Name,
-		CategoryID: request.CategoryID,
-		Price: request.Price,
+		Name:           request.Name,
+		CategoryID:     request.CategoryID,
+		Price:          request.Price,
 		AvailableStock: request.AvailableStock,
-		SupplierID: request.SupplierID,
+		SupplierID:     request.SupplierID,
 	})
 
 	if err != nil {
@@ -34,7 +34,7 @@ func (p *ProductRepositoryImpl) CreateProduct(ctx context.Context, request *dto.
 	return dto.ProductFromDbToDomain(product), nil
 }
 
-func (p *ProductRepositoryImpl) IncreaseProductStock(ctx context.Context, id uuid.UUID, request *dto.IncreaseProductStockRequest) (*domain.Product, error){
+func (p *ProductRepositoryImpl) IncreaseProductStock(ctx context.Context, id uuid.UUID, request *dto.IncreaseProductStockRequest) (*domain.Product, error) {
 	product, err := p.queries.IncreaseProductStock(ctx, db.IncreaseProductStockParams{ID: id, Increasevalue: request.Increasevalue})
 
 	if err != nil {
@@ -45,7 +45,7 @@ func (p *ProductRepositoryImpl) IncreaseProductStock(ctx context.Context, id uui
 
 }
 
-func (p *ProductRepositoryImpl) DecreaseProductStock(ctx context.Context, id uuid.UUID, request *dto.DecreaseProductStockRequest) (*domain.Product, error){
+func (p *ProductRepositoryImpl) DecreaseProductStock(ctx context.Context, id uuid.UUID, request *dto.DecreaseProductStockRequest) (*domain.Product, error) {
 	product, err := p.queries.DecreaseProductStock(ctx, db.DecreaseProductStockParams{ID: id, Decreasevalue: request.Decreasevalue})
 
 	if err != nil {
@@ -55,11 +55,11 @@ func (p *ProductRepositoryImpl) DecreaseProductStock(ctx context.Context, id uui
 	return dto.ProductFromDbToDomain(product), nil
 }
 
-func (p *ProductRepositoryImpl) DeleteProductByID(ctx context.Context, id uuid.UUID) error{
+func (p *ProductRepositoryImpl) DeleteProductByID(ctx context.Context, id uuid.UUID) error {
 	return p.queries.DeleteProductByID(ctx, id)
 }
 
-func (p *ProductRepositoryImpl) GetAvailableProducts(ctx context.Context) ([]*domain.Product, error){
+func (p *ProductRepositoryImpl) GetAvailableProducts(ctx context.Context) ([]*domain.Product, error) {
 	productList, err := p.queries.GetAvailableProducts(ctx)
 
 	if err != nil {
@@ -75,7 +75,7 @@ func (p *ProductRepositoryImpl) GetAvailableProducts(ctx context.Context) ([]*do
 	return products, nil
 }
 
-func (p *ProductRepositoryImpl) GetProductByID(ctx context.Context, id uuid.UUID) (*domain.Product, error){
+func (p *ProductRepositoryImpl) GetProductByID(ctx context.Context, id uuid.UUID) (*domain.Product, error) {
 	product, err := p.queries.GetProductByID(ctx, id)
 
 	if err != nil {

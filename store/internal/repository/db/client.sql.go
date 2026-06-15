@@ -27,10 +27,10 @@ RETURNING id, client_name, client_surname, birthday, gender, registration_date, 
 `
 
 type CreateClientParams struct {
-	ClientName    string    `json:"client_name"`
-	ClientSurname string    `json:"client_surname"`
-	Birthday      time.Time `json:"birthday"`
-	Gender        string    `json:"gender"`
+	ClientName    string     `json:"client_name"`
+	ClientSurname string     `json:"client_surname"`
+	Birthday      time.Time  `json:"birthday"`
+	Gender        string     `json:"gender"`
 	AddressID     *uuid.UUID `json:"address_id"`
 }
 

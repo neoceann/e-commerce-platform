@@ -15,17 +15,17 @@ import (
 )
 
 type authService struct {
-    userRepo *db.Queries
-    jwtService   jwt.JWTService
-    passwordService   password.PasswordService
+	userRepo        *db.Queries
+	jwtService      jwt.JWTService
+	passwordService password.PasswordService
 }
 
 func NewAuthService(userRepo *db.Queries, j jwt.JWTService, p password.PasswordService) AuthService {
-    return &authService{
-        userRepo: userRepo,
-        jwtService:   j,
-        passwordService:   p,
-    }
+	return &authService{
+		userRepo:        userRepo,
+		jwtService:      j,
+		passwordService: p,
+	}
 }
 
 func (a *authService) Register(ctx context.Context, register *RegisterRequest) (*AuthResponse, error) {
@@ -62,7 +62,7 @@ func (a *authService) Register(ctx context.Context, register *RegisterRequest) (
 
 	return &AuthResponse{Token: token, UserId: user.ID.String()}, nil
 }
-	
+
 func (a *authService) Login(ctx context.Context, login *LoginRequest) (*AuthResponse, error) {
 	user, err := a.userRepo.GetUserByEmail(ctx, login.Email)
 
@@ -82,7 +82,7 @@ func (a *authService) Login(ctx context.Context, login *LoginRequest) (*AuthResp
 
 	return &AuthResponse{Token: token, UserId: user.ID.String()}, nil
 }
-	
+
 func (a *authService) ChangePassword(ctx context.Context, change *ChangePasswordRequest) error {
 	uid, err := uuid.Parse(change.UserID)
 	if err != nil {
@@ -106,7 +106,7 @@ func (a *authService) ChangePassword(ctx context.Context, change *ChangePassword
 
 	return a.userRepo.UpdatePassword(ctx, db.UpdatePasswordParams{ID: user.ID, PasswordHash: newPwd})
 }
-	
+
 func (a *authService) RecoverPassword(ctx context.Context, recover *RecoverPasswordRequest) (*RecoverPasswordResponse, error) {
 	user, err := a.userRepo.GetUserByEmail(ctx, recover.Email)
 

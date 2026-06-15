@@ -24,9 +24,9 @@ RETURNING id, name, address_id, phone_number, created_at, updated_at
 `
 
 type CreateSupplierParams struct {
-	Name        string    `json:"name"`
+	Name        string     `json:"name"`
 	AddressID   *uuid.UUID `json:"address_id"`
-	PhoneNumber string    `json:"phone_number"`
+	PhoneNumber string     `json:"phone_number"`
 }
 
 func (q *Queries) CreateSupplier(ctx context.Context, arg CreateSupplierParams) (Supplier, error) {

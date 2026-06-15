@@ -14,30 +14,30 @@ type AuthService interface {
 }
 
 type RegisterRequest struct {
-	Email	string
-	FirstName	string
-	LastName	string
-	Phone	string
-	Password	string
+	Email     string
+	FirstName string
+	LastName  string
+	Phone     string
+	Password  string
 }
 
 type LoginRequest struct {
-	Email	string
-	Password	string
+	Email    string
+	Password string
 }
 
 type ChangePasswordRequest struct {
-	UserID	string
-	OldPassword	string
-	NewPassword	string
+	UserID      string
+	OldPassword string
+	NewPassword string
 }
 
 type RecoverPasswordRequest struct {
-	Email	string
+	Email string
 }
 
 type ValidateTokenRequest struct {
-	Token	string
+	Token string
 }
 
 type RecoverPasswordResponse struct {
@@ -45,6 +45,6 @@ type RecoverPasswordResponse struct {
 }
 
 type AuthResponse struct {
-	Token	string
-	UserId	string
+	Token  string
+	UserId string
 }

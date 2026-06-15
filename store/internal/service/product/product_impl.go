@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
 	"store/internal/repository/product"
 	"strings"
-	"github.com/google/uuid"
 )
 
 type ProductServiceImpl struct {

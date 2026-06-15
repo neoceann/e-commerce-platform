@@ -33,7 +33,7 @@ func NewClientHandler(clientService service.ClientService) *ClientHandler {
 // @Router       /clients/ [post]
 func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateClientRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -45,11 +45,11 @@ func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, service.ErrInvalidClientData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusCreated, client)
 }
 
@@ -79,11 +79,11 @@ func (h *ClientHandler) DeleteClient(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case errors.Is(err, service.ErrClientNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -109,7 +109,7 @@ func (h *ClientHandler) GetClientsByFullName(w http.ResponseWriter, r *http.Requ
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, clients)
 }
 
@@ -158,11 +158,11 @@ func (h *ClientHandler) GetClientsWithPage(w http.ResponseWriter, r *http.Reques
 		if errors.Is(err, service.ErrInvalidPagination) {
 			writeError(w, http.StatusBadRequest, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, clients)
 
 }
@@ -180,13 +180,13 @@ func (h *ClientHandler) UpdateClientAddr(w http.ResponseWriter, r *http.Request)
 
 	clientID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid client id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid client id")
+		return
+	}
 
 	var req dto.UpdateAddressParamsRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -198,11 +198,11 @@ func (h *ClientHandler) UpdateClientAddr(w http.ResponseWriter, r *http.Request)
 		switch {
 		case errors.Is(err, service.ErrClientNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidAddrData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}

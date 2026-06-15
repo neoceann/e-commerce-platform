@@ -9,9 +9,9 @@ import (
 )
 
 type CreateSupplierRequest struct {
-	Name        string    `json:"name" validate:"required"`
+	Name        string     `json:"name" validate:"required"`
 	AddressID   *uuid.UUID `json:"address_id,omitempty"`
-	PhoneNumber string    `json:"phone_number,omitempty"`
+	PhoneNumber string     `json:"phone_number,omitempty"`
 }
 
 type SupplierResponse struct {
@@ -25,11 +25,11 @@ type SupplierResponse struct {
 
 func SupplierFromDbToDomain(s db.Supplier) *domain.Supplier {
 	return &domain.Supplier{
-		ID: s.ID,
-		Name: s.Name,
-		AddressID: &s.AddressID,
+		ID:          s.ID,
+		Name:        s.Name,
+		AddressID:   &s.AddressID,
 		PhoneNumber: s.PhoneNumber,
-		CreatedAt: s.CreatedAt,
-		UpdatedAt: s.UpdatedAt,
+		CreatedAt:   s.CreatedAt,
+		UpdatedAt:   s.UpdatedAt,
 	}
 }

@@ -3,8 +3,8 @@ package db
 import (
 	"context"
 	"fmt"
-	"time"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"time"
 )
 
 func NewConnection(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
@@ -32,5 +32,5 @@ func NewConnection(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 }
 
 func NewDBTX(pool *pgxpool.Pool) DBTX {
-    return pool
+	return pool
 }

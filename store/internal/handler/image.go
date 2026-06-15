@@ -33,7 +33,7 @@ func NewImageHandler(imageService service.ImageService) *ImageHandler {
 func (h *ImageHandler) CreateImage(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateImageRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body" + err.Error())
+		writeError(w, http.StatusBadRequest, "invalid request body"+err.Error())
 		return
 	}
 
@@ -43,11 +43,11 @@ func (h *ImageHandler) CreateImage(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, service.ErrInvalidImageData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusCreated, dto.ImageToResponce(image))
 }
 
@@ -77,11 +77,11 @@ func (h *ImageHandler) DeleteImage(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case errors.Is(err, service.ErrImageNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -103,21 +103,21 @@ func (h *ImageHandler) GetImageByID(w http.ResponseWriter, r *http.Request) {
 
 	imageID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid image id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid image id")
+		return
+	}
 
 	image, err := h.imageService.GetImageByImageId(r.Context(), imageID)
 	if err != nil {
 		if errors.Is(err, service.ErrImageNotFound) {
 			writeError(w, http.StatusNotFound, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(image.ImageData)))
 	w.Header().Set("Content-Type", "application/octet-stream")
 	w.Header().Set("Content-Disposition", "attachment; filename=\"downloaded_image.png\"")
@@ -138,17 +138,17 @@ func (h *ImageHandler) GetImagesByProductID(w http.ResponseWriter, r *http.Reque
 
 	imageID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid product id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid product id")
+		return
+	}
 
 	images, err := h.imageService.GetImagesByProductID(r.Context(), imageID)
 	if err != nil {
 		if errors.Is(err, service.ErrImageNotFound) {
 			writeError(w, http.StatusNotFound, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -158,8 +158,8 @@ func (h *ImageHandler) GetImagesByProductID(w http.ResponseWriter, r *http.Reque
 	for _, img := range images {
 		resp = append(resp, dto.ImageToResponce(img))
 	}
-   
-    writeJSON(w, http.StatusOK, resp)
+
+	writeJSON(w, http.StatusOK, resp)
 
 }
 
@@ -176,13 +176,13 @@ func (h *ImageHandler) UpdateImage(w http.ResponseWriter, r *http.Request) {
 
 	imageID, err := uuid.Parse(idStr)
 
-    if err != nil {
-        writeError(w, http.StatusBadRequest, "invalid image id")
-        return
-    }
+	if err != nil {
+		writeError(w, http.StatusBadRequest, "invalid image id")
+		return
+	}
 
 	var req dto.UpdateImageRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -194,11 +194,11 @@ func (h *ImageHandler) UpdateImage(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case errors.Is(err, service.ErrImageNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidImageData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}

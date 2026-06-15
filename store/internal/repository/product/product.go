@@ -2,9 +2,9 @@ package repository
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"store/internal/domain"
 	"store/internal/dto"
-	"github.com/google/uuid"
 )
 
 type ProductRepository interface {

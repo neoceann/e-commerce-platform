@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"net/http"
 	"store/internal/dto"
 	"store/internal/service/product"
-	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 )
 
 type ProductHandler struct {
@@ -30,7 +30,7 @@ func NewProductHandler(productService service.ProductService) *ProductHandler {
 // @Router       /products/ [post]
 func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateProductRequest
-	
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
@@ -42,11 +42,11 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, service.ErrInvalidProductData):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusCreated, product)
 }
 
@@ -76,7 +76,7 @@ func (h *ProductHandler) IncreaseProductStock(w http.ResponseWriter, r *http.Req
 
 	product, err := h.productService.IncreaseProductStock(r.Context(), productID, &dto.IncreaseProductStockRequest{Increasevalue: req.Increasevalue})
 
-	if err != nil {  
+	if err != nil {
 		switch {
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
@@ -86,9 +86,9 @@ func (h *ProductHandler) IncreaseProductStock(w http.ResponseWriter, r *http.Req
 
 		case errors.Is(err, service.ErrProductNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -109,7 +109,7 @@ func (h *ProductHandler) DecreaseProductStock(w http.ResponseWriter, r *http.Req
 	idStr := chi.URLParam(r, "id")
 	productID, err := uuid.Parse(idStr)
 
-	if err != nil {  
+	if err != nil {
 		switch {
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
@@ -119,9 +119,9 @@ func (h *ProductHandler) DecreaseProductStock(w http.ResponseWriter, r *http.Req
 
 		case errors.Is(err, service.ErrProductNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -139,7 +139,7 @@ func (h *ProductHandler) DecreaseProductStock(w http.ResponseWriter, r *http.Req
 		case errors.Is(err, service.ErrInvalidID), errors.Is(err, service.ErrDecreaseFailed):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -170,11 +170,11 @@ func (h *ProductHandler) GetProductByID(w http.ResponseWriter, r *http.Request) 
 		if errors.Is(err, service.ErrProductNotFound) {
 			writeError(w, http.StatusNotFound, err.Error())
 		} else {
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, product)
 }
 
@@ -203,11 +203,11 @@ func (h *ProductHandler) DeleteProductByID(w http.ResponseWriter, r *http.Reques
 		switch {
 		case errors.Is(err, service.ErrProductNotFound):
 			writeError(w, http.StatusNotFound, err.Error())
-		
+
 		case errors.Is(err, service.ErrInvalidID):
 			writeError(w, http.StatusBadRequest, err.Error())
 		default:
-			writeError(w, http.StatusInternalServerError, "internal server error: " + err.Error())
+			writeError(w, http.StatusInternalServerError, "internal server error: "+err.Error())
 		}
 		return
 	}
@@ -226,6 +226,6 @@ func (h *ProductHandler) GetAvailableProducts(w http.ResponseWriter, r *http.Req
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	
+
 	writeJSON(w, http.StatusOK, products)
 }

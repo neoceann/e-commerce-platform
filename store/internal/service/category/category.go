@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"store/internal/dto"
 	"store/internal/domain"
+	"store/internal/dto"
 )
 
 type CategoryService interface {

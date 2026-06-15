@@ -132,7 +132,7 @@ func (a *authService) RecoverPassword(ctx context.Context, recover *RecoverPassw
 		return nil, fmt.Errorf("update temp password error: %w", err)
 	}
 
-	log.Printf("PASSWORD RECOVERING FOR USER: %s. NewTemporary password: %s", user.Email, temp)
+	log.Printf("PASSWORD RECOVERING FOR USER: %s. New temporary password: %s", user.Email, temp)
 
 	return &RecoverPasswordResponse{ImitationNewPassword: temp}, nil
 

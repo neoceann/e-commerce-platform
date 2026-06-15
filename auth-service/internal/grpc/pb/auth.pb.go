@@ -151,7 +151,7 @@ func (x *LoginRequest) GetPassword() string {
 
 type ChangePasswordRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	OldPassword   string                 `protobuf:"bytes,2,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
 	NewPassword   string                 `protobuf:"bytes,3,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -188,9 +188,9 @@ func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
 	return file_auth_service_proto_auth_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ChangePasswordRequest) GetUserId() string {
+func (x *ChangePasswordRequest) GetToken() string {
 	if x != nil {
-		return x.UserId
+		return x.Token
 	}
 	return ""
 }
@@ -567,9 +567,9 @@ const file_auth_service_proto_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x05 \x01(\tR\bpassword\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"v\n" +
-	"\x15ChangePasswordRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12!\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"s\n" +
+	"\x15ChangePasswordRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12!\n" +
 	"\fold_password\x18\x02 \x01(\tR\voldPassword\x12!\n" +
 	"\fnew_password\x18\x03 \x01(\tR\vnewPassword\".\n" +
 	"\x16RecoverPasswordRequest\x12\x14\n" +

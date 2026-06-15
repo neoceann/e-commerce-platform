@@ -22,6 +22,8 @@ type Config struct {
 	ReadTimeout  time.Duration `env:"READ_TIMEOUT" env-default:"10s"`
 	WriteTimeout time.Duration `env:"WRITE_TIMEOUT" env-default:"10s"`
 	IdleTimeout  time.Duration `env:"IDLE_TIMEOUT" env-default:"60s"`
+
+	AuthServiceAddress string `env:"AUTH_SERVICE_ADDR"`
 }
 
 func (c *Config) GetDSN() string {
@@ -53,4 +55,8 @@ func LoadConfig() (*Config, error) {
 
 func (c *Config) ServerAddress() string {
 	return fmt.Sprintf("%s:%s", c.ServerHost, c.ServerPort)
+}
+
+func AuthServiceAddr(c *Config) string {
+	return c.AuthServiceAddress
 }

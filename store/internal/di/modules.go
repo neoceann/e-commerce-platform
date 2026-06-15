@@ -9,6 +9,7 @@ import (
 	"go.uber.org/fx"
 
 	"store/internal/config"
+	"store/internal/grpc"
 	"store/internal/handler"
 	address_repo "store/internal/repository/address"
 	category_repo "store/internal/repository/category"
@@ -33,6 +34,10 @@ var Module = fx.Options(
 	fx.Provide(dbconn.NewConnection),
 	fx.Provide(dbconn.NewDBTX),
 	fx.Provide(dbconn.New),
+
+	fx.Provide(config.AuthServiceAddr),
+	fx.Provide(grpc.NewAuthClient),
+	fx.Provide(handler.NewAuthHandler),
 
 	fx.Provide(client_repo.NewClientRepository),
 	fx.Provide(supplier_repo.NewSupplierRepository),

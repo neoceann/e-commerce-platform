@@ -19,6 +19,7 @@ type RouterParams struct {
 	CategoryHandler *handler.CategoryHandler
 	ProductHandler  *handler.ProductHandler
 	AddressHandler  *handler.AddressHandler
+	AuthHadler		*handler.AuthHandler
 }
 
 func NewRouter(p RouterParams) http.Handler {
@@ -86,6 +87,8 @@ func NewRouter(p RouterParams) http.Handler {
 		r.Route("/addresses", func(r chi.Router) {
 			r.Get("/{id}", p.AddressHandler.GetAddressByID)
 		})
+		r.Post("/register", p.AuthHadler.Register)
+		r.Post("/auth", p.AuthHadler.Auth)
 	})
 
 	return r

@@ -89,6 +89,7 @@ func NewRouter(p RouterParams) http.Handler {
 		})
 		r.Post("/register", p.AuthHadler.Register)
 		r.Post("/auth", p.AuthHadler.Auth)
+		r.Post("/recover", p.AuthHadler.Recover)
 	})
 
 	return r

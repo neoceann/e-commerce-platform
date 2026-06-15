@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type AuthServiceAddress string
+
 type Config struct {
 	ServerPort string `env:"SERVER_PORT" env-default:"8080"`
 	ServerHost string `env:"SERVER_HOST" env-default:"localhost"`
@@ -57,6 +59,6 @@ func (c *Config) ServerAddress() string {
 	return fmt.Sprintf("%s:%s", c.ServerHost, c.ServerPort)
 }
 
-func AuthServiceAddr(c *Config) string {
-	return c.AuthServiceAddress
+func AuthServiceAddr(c *Config) AuthServiceAddress {
+	return AuthServiceAddress(c.AuthServiceAddress)
 }

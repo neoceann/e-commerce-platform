@@ -56,7 +56,7 @@ func main() {
 	reflection.Register(grpcServer)
 
 	go func() {
-		log.Printf("gRPC server listening on :%s", cfg.GrpcPort)
+		log.Printf("gRPC server listening on: %s", cfg.GrpcPort)
 		if err := grpcServer.Serve(lis); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
 		}

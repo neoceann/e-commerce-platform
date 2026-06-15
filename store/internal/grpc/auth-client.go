@@ -2,12 +2,14 @@
 package grpc
 
 import (
-    "fmt"
-    "sync"
-    
-    "store/internal/grpc/pb"
-    "google.golang.org/grpc"
-    "google.golang.org/grpc/credentials/insecure"
+	"fmt"
+	"sync"
+
+	"store/internal/config"
+	"store/internal/grpc/pb"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type AuthClient struct {
@@ -20,10 +22,10 @@ var (
     authClientInstance *AuthClient
 )
 
-func NewAuthClient(addr string) (*AuthClient, error) {
+func NewAuthClient(addr config.AuthServiceAddress) (*AuthClient, error) {
     var err error
     authClientOnce.Do(func() {
-        conn, dialErr := grpc.NewClient(addr, 
+        conn, dialErr := grpc.NewClient(string(addr), 
             grpc.WithTransportCredentials(insecure.NewCredentials()),
         )
         if dialErr != nil {

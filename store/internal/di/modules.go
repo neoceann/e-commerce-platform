@@ -38,7 +38,6 @@ var Module = fx.Options(
 
 	fx.Provide(config.AuthServiceAddr),
 	fx.Provide(grpc.NewAuthClient),
-	fx.Provide(handler.NewAuthHandler),
 
 	fx.Provide(client_repo.NewClientRepository),
 	fx.Provide(supplier_repo.NewSupplierRepository),
@@ -54,6 +53,7 @@ var Module = fx.Options(
 	fx.Provide(product_service.NewProductService),
 	fx.Provide(address_service.NewAddressService),
 
+	fx.Provide(handler.NewAuthHandler),
 	fx.Provide(middleware.NewAuthMiddleware),
 	fx.Provide(handler.NewClientHandler),
 	fx.Provide(handler.NewSupplierHandler),

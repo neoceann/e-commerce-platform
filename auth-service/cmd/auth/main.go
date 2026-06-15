@@ -19,7 +19,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 
-	 "google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 		log.Fatalf("Failed to connect to DB: %v", err)
 	}
 	if err := pool.Ping(ctx); err != nil {
-    log.Fatalf("Failed to ping database: %v", err)
+		log.Fatalf("Failed to ping database: %v", err)
 	}
 	defer pool.Close()
 

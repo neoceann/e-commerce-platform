@@ -20,8 +20,8 @@ type RouterParams struct {
 	CategoryHandler *handler.CategoryHandler
 	ProductHandler  *handler.ProductHandler
 	AddressHandler  *handler.AddressHandler
-	AuthHadler		*handler.AuthHandler
-	Middleware		*m.AuthMiddleware
+	AuthHandler     *handler.AuthHandler
+	Middleware      *m.AuthMiddleware
 }
 
 func NewRouter(p RouterParams) http.Handler {
@@ -52,49 +52,52 @@ func NewRouter(p RouterParams) http.Handler {
 		httpSwagger.URL("/swagger/doc.json"),
 	))
 
-	r.Post("/register", p.AuthHadler.Register)
-	r.Post("/auth", p.AuthHadler.Auth)
-	r.Post("/recover", p.AuthHadler.Recover)
-
-
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Use(p.Middleware.Authenticate)
-		
-		r.Route("/clients", func(r chi.Router) {
-			r.Post("/", p.ClientHandler.CreateClient)
-			r.Delete("/{id}", p.ClientHandler.DeleteClient)
-			r.Get("/by_name", p.ClientHandler.GetClientsByFullName)
-			r.Get("/by_page", p.ClientHandler.GetClientsWithPage)
-			r.Patch("/{id}/address", p.ClientHandler.UpdateClientAddr)
-		})
-		r.Route("/suppliers", func(r chi.Router) {
-			r.Post("/", p.SupplierHandler.CreateSupplier)
-			r.Delete("/{id}", p.SupplierHandler.DeleteSupplier)
-			r.Get("/", p.SupplierHandler.GetAllSuppliers)
-			r.Get("/{id}", p.SupplierHandler.GetSupplierByID)
-			r.Patch("/{id}/address", p.SupplierHandler.UpdateSupplierAddr)
-		})
-		r.Route("/images", func(r chi.Router) {
-			r.Post("/", p.ImageHandler.CreateImage)
-			r.Delete("/{id}", p.ImageHandler.DeleteImage)
-			r.Patch("/{id}/update", p.ImageHandler.UpdateImage)
-			r.Get("/{id}", p.ImageHandler.GetImageByID)
-			r.Get("/product/{id}", p.ImageHandler.GetImagesByProductID)
-		})
-		r.Route("/categories", func(r chi.Router) {
-			r.Post("/", p.CategoryHandler.CreateCategory)
-			r.Get("/", p.CategoryHandler.GetAllCategories)
-		})
-		r.Route("/products", func(r chi.Router) {
-			r.Post("/", p.ProductHandler.CreateProduct)
-			r.Patch("/{id}/increase", p.ProductHandler.IncreaseProductStock)
-			r.Patch("/{id}/decrease", p.ProductHandler.DecreaseProductStock)
-			r.Get("/{id}", p.ProductHandler.GetProductByID)
-			r.Get("/available", p.ProductHandler.GetAvailableProducts)
-			r.Delete("/{id}", p.ProductHandler.DeleteProductByID)
-		})
-		r.Route("/addresses", func(r chi.Router) {
-			r.Get("/{id}", p.AddressHandler.GetAddressByID)
+		r.Post("/register", p.AuthHandler.Register)
+		r.Post("/auth", p.AuthHandler.Auth)
+		r.Post("/recover", p.AuthHandler.Recover)
+
+		r.Group(func(r chi.Router) {
+			r.Use(p.Middleware.Authenticate)
+
+			r.Post("/change", p.AuthHandler.ChangePassword)
+
+			r.Route("/clients", func(r chi.Router) {
+				r.Post("/", p.ClientHandler.CreateClient)
+				r.Delete("/{id}", p.ClientHandler.DeleteClient)
+				r.Get("/by_name", p.ClientHandler.GetClientsByFullName)
+				r.Get("/by_page", p.ClientHandler.GetClientsWithPage)
+				r.Patch("/{id}/address", p.ClientHandler.UpdateClientAddr)
+			})
+			r.Route("/suppliers", func(r chi.Router) {
+				r.Post("/", p.SupplierHandler.CreateSupplier)
+				r.Delete("/{id}", p.SupplierHandler.DeleteSupplier)
+				r.Get("/", p.SupplierHandler.GetAllSuppliers)
+				r.Get("/{id}", p.SupplierHandler.GetSupplierByID)
+				r.Patch("/{id}/address", p.SupplierHandler.UpdateSupplierAddr)
+			})
+			r.Route("/images", func(r chi.Router) {
+				r.Post("/", p.ImageHandler.CreateImage)
+				r.Delete("/{id}", p.ImageHandler.DeleteImage)
+				r.Patch("/{id}/update", p.ImageHandler.UpdateImage)
+				r.Get("/{id}", p.ImageHandler.GetImageByID)
+				r.Get("/product/{id}", p.ImageHandler.GetImagesByProductID)
+			})
+			r.Route("/categories", func(r chi.Router) {
+				r.Post("/", p.CategoryHandler.CreateCategory)
+				r.Get("/", p.CategoryHandler.GetAllCategories)
+			})
+			r.Route("/products", func(r chi.Router) {
+				r.Post("/", p.ProductHandler.CreateProduct)
+				r.Patch("/{id}/increase", p.ProductHandler.IncreaseProductStock)
+				r.Patch("/{id}/decrease", p.ProductHandler.DecreaseProductStock)
+				r.Get("/{id}", p.ProductHandler.GetProductByID)
+				r.Get("/available", p.ProductHandler.GetAvailableProducts)
+				r.Delete("/{id}", p.ProductHandler.DeleteProductByID)
+			})
+			r.Route("/addresses", func(r chi.Router) {
+				r.Get("/{id}", p.AddressHandler.GetAddressByID)
+			})
 		})
 	})
 

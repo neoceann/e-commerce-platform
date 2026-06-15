@@ -15,6 +15,8 @@ proto:
 clean-proto:
 	rm -rf $(AUTH_DIR)/internal/grpc/pb/*.go
 
+swag:
+	swag init -g store/cmd/api/main.go -o store/docs
 
 sqlc:
 	cd $(SQLC_DIR) && sqlc generate

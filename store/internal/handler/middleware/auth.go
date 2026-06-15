@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"net/http"
-	"strings"
 
 	"store/internal/grpc"
 	"store/internal/grpc/pb"
@@ -50,12 +49,7 @@ func extractToken(r *http.Request) string {
 		return ""
 	}
 
-	parts := strings.SplitN(authHeader, " ", 2)
-	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
-		return ""
-	}
-
-	return parts[1]
+	return authHeader
 }
 
 func GetUserID(ctx context.Context) (string, bool) {

@@ -24,6 +24,7 @@ func NewSupplierHandler(supplierService service.SupplierService) *SupplierHandle
 // @Summary      Создание поставщика
 // @Description  Добавляет нового поставщика в систему
 // @Tags	     Поставщики
+// @Security     BearerAuth
 // @Param        request body dto.CreateSupplierRequest true "Данные поставщика"
 // @Success      201 {object} domain.Supplier "Поставщик создан"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -54,6 +55,7 @@ func (h *SupplierHandler) CreateSupplier(w http.ResponseWriter, r *http.Request)
 // @Summary      Удаление поставщика
 // @Description  Удаление поставщика по ID
 // @Tags	     Поставщики
+// @Security     BearerAuth
 // @Param        id path string true "UUID поставщика"
 // @Success      204 "Поставщик удален"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -91,6 +93,7 @@ func (h *SupplierHandler) DeleteSupplier(w http.ResponseWriter, r *http.Request)
 
 // @Summary      Получить список всех поставщиков
 // @Tags	     Поставщики
+// @Security     BearerAuth
 // @Success      200 "Данные успешно получены"
 // @Failure      500 {object} map[string]string "Внутренняя ошибка сервера"
 // @Router       /suppliers/ [get]
@@ -107,6 +110,7 @@ func (h *SupplierHandler) GetAllSuppliers(w http.ResponseWriter, r *http.Request
 
 // @Summary      Получить поставщика по ID
 // @Tags	     Поставщики
+// @Security     BearerAuth
 // @Param        id path string true "UUID поставщика"
 // @Success      200 "Данные успешно получены"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -139,6 +143,7 @@ func (h *SupplierHandler) GetSupplierByID(w http.ResponseWriter, r *http.Request
 
 // @Summary      Обновить адрес поставщика
 // @Tags	     Поставщики
+// @Security     BearerAuth
 // @Param		 id path string true "UUID поставщика"
 // @Param        request body dto.UpdateAddressParamsRequest true "Новый адрес"
 // @Success      200 "Данные успешно обновлены"

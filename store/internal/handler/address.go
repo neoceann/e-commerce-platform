@@ -20,6 +20,7 @@ func NewAddressHandler(a service.AddressService) *AddressHandler {
 
 // @Summary      Получить адрес по ID
 // @Tags	     Адреса
+// @Security     BearerAuth
 // @Param		 id path string true "UUID адреса"
 // @Success      200 {object} domain.Product "Данные получены успешно"
 // @Failure      400 {object} map[string]string "Неверный запрос"

@@ -47,6 +47,7 @@ func (a *authService) Register(ctx context.Context, register *RegisterRequest) (
 
 	userParams := RegisterInfoFromServiceToDB(register)
 	userParams.PasswordHash = hashpwd
+	userParams.UserRole = "user"
 
 	user, err := a.userRepo.CreateUser(ctx, *userParams)
 

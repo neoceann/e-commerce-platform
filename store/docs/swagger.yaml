@@ -174,6 +174,52 @@ definitions:
     required:
     - image_data
     type: object
+  handler.AuthRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.AuthResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  handler.ChangePasswordRequest:
+    properties:
+      new:
+        type: string
+      old:
+        type: string
+    type: object
+  handler.RecoverPasswordRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  handler.RecoverPasswordResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.RegisterRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -212,9 +258,36 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить адрес по ID
       tags:
       - Адреса
+  /auth:
+    post:
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AuthRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.AuthResponse'
+        "400":
+          description: Неверный запрос
+          schema:
+            type: string
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            type: string
+      summary: Вход зарегистрированного пользователя
+      tags:
+      - Управление учетной записью
   /categories/:
     get:
       responses:
@@ -226,6 +299,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список всех категорий
       tags:
       - Категории
@@ -254,9 +329,38 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Создание категории
       tags:
       - Категории
+  /change:
+    post:
+      parameters:
+      - description: Запрос на смену пароля
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.ChangePasswordRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Неверный запрос
+          schema:
+            type: string
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Смена пароля
+      tags:
+      - Управление учетной записью
   /clients/:
     post:
       description: 'Добавляет нового клиента в систему. Формат поля "birthday": "1994-01-02T00:00:00Z",'
@@ -284,6 +388,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Создание клиента
       tags:
       - Клиенты
@@ -317,6 +423,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Удаление клиента
       tags:
       - Клиенты
@@ -349,6 +457,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Обновить адрес клиента
       tags:
       - Клиенты
@@ -375,6 +485,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список клиентов по имени и фамилии
       tags:
       - Клиенты
@@ -405,6 +517,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список клиентов с пагинацией
       tags:
       - Клиенты
@@ -435,6 +549,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Создание изображения
       tags:
       - Изображения товаров
@@ -468,6 +584,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Удаление изображение
       tags:
       - Изображения товаров
@@ -503,6 +621,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить изображение по его ID
       tags:
       - Изображения товаров
@@ -535,6 +655,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Обновить изображение
       tags:
       - Изображения товаров
@@ -568,6 +690,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список изображений по ID товара
       tags:
       - Изображения товаров
@@ -597,6 +721,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Создание товара
       tags:
       - Товары
@@ -629,6 +755,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Удаление товара по ID
       tags:
       - Товары
@@ -662,6 +790,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить товар по ID
       tags:
       - Товары
@@ -702,6 +832,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Уменьшение количества товара
       tags:
       - Товары
@@ -742,6 +874,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Добавление количества товара
       tags:
       - Товары
@@ -756,9 +890,61 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список доступных товаров
       tags:
       - Товары
+  /recover:
+    post:
+      parameters:
+      - description: Запрос на восстановление пароля
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RecoverPasswordRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.RecoverPasswordResponse'
+        "400":
+          description: Неверный запрос
+          schema:
+            type: string
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            type: string
+      summary: Восстановление пароля
+      tags:
+      - Управление учетной записью
+  /register:
+    post:
+      parameters:
+      - description: Данные для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterRequest'
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Неверный запрос
+          schema:
+            type: string
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/handler.AuthResponse'
+      summary: Регистрация нового пользователя
+      tags:
+      - Управление учетной записью
   /suppliers/:
     get:
       responses:
@@ -770,6 +956,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить список всех поставщиков
       tags:
       - Поставщики
@@ -799,6 +987,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Создание поставщика
       tags:
       - Поставщики
@@ -832,6 +1022,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Удаление поставщика
       tags:
       - Поставщики
@@ -863,6 +1055,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Получить поставщика по ID
       tags:
       - Поставщики
@@ -895,7 +1089,15 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Обновить адрес поставщика
       tags:
       - Поставщики
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer " followed by your token
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -52,6 +52,14 @@ type ChangePasswordRequest struct {
 	NewPassword string `json:"new"`
 }
 
+// @Summary      Смена пароля
+// @Tags	     Управление учетной записью
+// @Security     BearerAuth
+// @Param        request body ChangePasswordRequest true "Запрос на смену пароля"
+// @Success      200 {object} string
+// @Failure      400 {object} string "Неверный запрос"
+// @Failure      500 {object} string "Внутренняя ошибка сервера"
+// @Router       /change [post]
 func (h *AuthHandler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	var req ChangePasswordRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -82,6 +90,13 @@ func (h *AuthHandler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, resp.Message)
 }
 
+// @Summary      Восстановление пароля
+// @Tags	     Управление учетной записью
+// @Param        request body RecoverPasswordRequest true "Запрос на восстановление пароля"
+// @Success      200 {object} RecoverPasswordResponse
+// @Failure      400 {object} string "Неверный запрос"
+// @Failure      500 {object} string "Внутренняя ошибка сервера"
+// @Router       /recover [post]
 func (h *AuthHandler) Recover(w http.ResponseWriter, r *http.Request) {
 	var req RecoverPasswordRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -104,6 +119,13 @@ func (h *AuthHandler) Recover(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, RecoverPasswordResponse{Message: resp.Message})
 }
 
+// @Summary      Регистрация нового пользователя
+// @Tags	     Управление учетной записью
+// @Param        request body RegisterRequest true "Данные для регистрации"
+// @Success      201 {object} string
+// @Failure      400 {object} string "Неверный запрос"
+// @Failure      500 {object} AuthResponse "Внутренняя ошибка сервера"
+// @Router       /register [post]
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var req RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -136,6 +158,13 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// @Summary      Вход зарегистрированного пользователя
+// @Tags	     Управление учетной записью
+// @Param        request body AuthRequest true "Данные для входа"
+// @Success      200 {object} AuthResponse
+// @Failure      400 {object} string "Неверный запрос"
+// @Failure      500 {object} string "Внутренняя ошибка сервера"
+// @Router       /auth [post]
 func (h *AuthHandler) Auth(w http.ResponseWriter, r *http.Request) {
 	var req AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

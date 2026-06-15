@@ -26,6 +26,7 @@ func NewClientHandler(clientService service.ClientService) *ClientHandler {
 // @Summary      Создание клиента
 // @Description  Добавляет нового клиента в систему. Формат поля "birthday": "1994-01-02T00:00:00Z",
 // @Tags	     Клиенты
+// @Security     BearerAuth
 // @Param        request body dto.CreateClientRequest true "Данные клиента"
 // @Success      201 {object} domain.Client "Клиент создан"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -56,6 +57,7 @@ func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 // @Summary      Удаление клиента
 // @Description  Удаление клиента по ID
 // @Tags	     Клиенты
+// @Security     BearerAuth
 // @Param        id path string true "UUID клиента"
 // @Success      204 "Клиент удален"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -95,6 +97,7 @@ func (h *ClientHandler) DeleteClient(w http.ResponseWriter, r *http.Request) {
 // @Summary      Получить список клиентов по имени и фамилии
 // @Description  Имя и фамилия обязательны
 // @Tags	     Клиенты
+// @Security     BearerAuth
 // @Param        client_name query string true "Имя"
 // @Param        client_surname query string true "Фамилия"
 // @Success      200 "Данные успешно получены"
@@ -116,6 +119,7 @@ func (h *ClientHandler) GetClientsByFullName(w http.ResponseWriter, r *http.Requ
 // @Summary      Получить список клиентов с пагинацией
 // @Description  При отсутствии поля Limit будет выдан весь список целиком
 // @Tags	     Клиенты
+// @Security     BearerAuth
 // @Param        limit query string false "Лимит записей"
 // @Param        offset query string false "Смещение"
 // @Success      200 "Данные успешно получены"
@@ -169,6 +173,7 @@ func (h *ClientHandler) GetClientsWithPage(w http.ResponseWriter, r *http.Reques
 
 // @Summary      Обновить адрес клиента
 // @Tags	     Клиенты
+// @Security     BearerAuth
 // @Param		 id path string true "UUID клиента"
 // @Param        request body dto.UpdateAddressParamsRequest true "Новый адрес"
 // @Success      200 "Данные успешно обновлены"

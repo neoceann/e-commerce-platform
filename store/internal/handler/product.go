@@ -23,6 +23,7 @@ func NewProductHandler(productService service.ProductService) *ProductHandler {
 
 // @Summary      Создание товара
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Param        request body dto.CreateProductRequest true "Данные товара"
 // @Success      201 {object} domain.Product "Товар создан"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -52,6 +53,7 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 // @Summary      Добавление количества товара
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Param		 id path string true "UUID товара"
 // @Param        request body dto.IncreaseProductStockRequest true "Количество"
 // @Success      200 {object} domain.Product "Добавлено успешно"
@@ -98,6 +100,7 @@ func (h *ProductHandler) IncreaseProductStock(w http.ResponseWriter, r *http.Req
 
 // @Summary      Уменьшение количества товара
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Param		 id path string true "UUID товара"
 // @Param        request body dto.DecreaseProductStockRequest true "Количество"
 // @Success      200 {object} domain.Product "Уменьшено успешно"
@@ -149,6 +152,7 @@ func (h *ProductHandler) DecreaseProductStock(w http.ResponseWriter, r *http.Req
 
 // @Summary      Получить товар по ID
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Param		 id path string true "UUID товара"
 // @Success      200 {object} domain.Product "Данные получены успешно"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -180,6 +184,7 @@ func (h *ProductHandler) GetProductByID(w http.ResponseWriter, r *http.Request) 
 
 // @Summary      Удаление товара по ID
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Param        id path string true "UUID товара"
 // @Success      204 "Товар удален"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -217,6 +222,7 @@ func (h *ProductHandler) DeleteProductByID(w http.ResponseWriter, r *http.Reques
 
 // @Summary      Получить список доступных товаров
 // @Tags	     Товары
+// @Security     BearerAuth
 // @Success      200 "Данные успешно получены"
 // @Failure      500 {object} map[string]string "Внутренняя ошибка сервера"
 // @Router       /products/available [get]

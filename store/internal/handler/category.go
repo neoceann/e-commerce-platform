@@ -20,6 +20,7 @@ func NewCategoryHandler(categoryService service.CategoryService) *CategoryHandle
 
 // @Summary      Создание категории
 // @Tags	     Категории
+// @Security     BearerAuth
 // @Param        request body dto.CreateCategoryRequest true "Название категории"
 // @Success      201 {object} domain.Category "Категория создана"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -49,6 +50,7 @@ func (c *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 
 // @Summary      Получить список всех категорий
 // @Tags	     Категории
+// @Security     BearerAuth
 // @Success      200 "Данные успешно получены"
 // @Failure      500 {object} map[string]string "Внутренняя ошибка сервера"
 // @Router       /categories/ [get]

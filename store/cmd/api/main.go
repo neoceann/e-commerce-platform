@@ -16,6 +16,10 @@ import (
 // @description     API для магазина бытовой техники
 // @host      localhost:8080
 // @BasePath  /api/v1
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer " followed by your token
 func main() {
 	fx.New(
 		// fx.WithLogger(func() fxevent.Logger {

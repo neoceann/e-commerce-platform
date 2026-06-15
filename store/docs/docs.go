@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/addresses/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Адреса"
                 ],
@@ -67,8 +72,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth": {
+            "post": {
+                "tags": [
+                    "Управление учетной записью"
+                ],
+                "summary": "Вход зарегистрированного пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для входа",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.AuthRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/categories/": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Категории"
                 ],
@@ -89,6 +138,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Категории"
                 ],
@@ -132,8 +186,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/change": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Управление учетной записью"
+                ],
+                "summary": "Смена пароля",
+                "parameters": [
+                    {
+                        "description": "Запрос на смену пароля",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/clients/": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Добавляет нового клиента в систему. Формат поля \"birthday\": \"1994-01-02T00:00:00Z\",",
                 "tags": [
                     "Клиенты"
@@ -180,6 +283,11 @@ const docTemplate = `{
         },
         "/clients/by_name": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Имя и фамилия обязательны",
                 "tags": [
                     "Клиенты"
@@ -219,6 +327,11 @@ const docTemplate = `{
         },
         "/clients/by_page": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "При отсутствии поля Limit будет выдан весь список целиком",
                 "tags": [
                     "Клиенты"
@@ -265,6 +378,11 @@ const docTemplate = `{
         },
         "/clients/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Удаление клиента по ID",
                 "tags": [
                     "Клиенты"
@@ -315,6 +433,11 @@ const docTemplate = `{
         },
         "/clients/{id}/address": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Клиенты"
                 ],
@@ -364,6 +487,11 @@ const docTemplate = `{
         },
         "/images/": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Добавляет новое изображение в систему",
                 "tags": [
                     "Изображения товаров"
@@ -410,6 +538,11 @@ const docTemplate = `{
         },
         "/images/product/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Для скачивания требуется запрашивать каждый ID отдельно (GET /images/{id})",
                 "tags": [
                     "Изображения товаров"
@@ -460,6 +593,11 @@ const docTemplate = `{
         },
         "/images/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "produces": [
                     "application/octet-stream"
                 ],
@@ -513,6 +651,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Удаление изображение по ID",
                 "tags": [
                     "Изображения товаров"
@@ -563,6 +706,11 @@ const docTemplate = `{
         },
         "/images/{id}/update": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Изображения товаров"
                 ],
@@ -612,6 +760,11 @@ const docTemplate = `{
         },
         "/products/": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -657,6 +810,11 @@ const docTemplate = `{
         },
         "/products/available": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -679,6 +837,11 @@ const docTemplate = `{
         },
         "/products/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -729,6 +892,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -778,6 +946,11 @@ const docTemplate = `{
         },
         "/products/{id}/decrease": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -839,6 +1012,11 @@ const docTemplate = `{
         },
         "/products/{id}/increase": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Товары"
                 ],
@@ -898,8 +1076,91 @@ const docTemplate = `{
                 }
             }
         },
+        "/recover": {
+            "post": {
+                "tags": [
+                    "Управление учетной записью"
+                ],
+                "summary": "Восстановление пароля",
+                "parameters": [
+                    {
+                        "description": "Запрос на восстановление пароля",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RecoverPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.RecoverPasswordResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Управление учетной записью"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для регистрации",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/handler.AuthResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/suppliers/": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Поставщики"
                 ],
@@ -920,6 +1181,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Добавляет нового поставщика в систему",
                 "tags": [
                     "Поставщики"
@@ -966,6 +1232,11 @@ const docTemplate = `{
         },
         "/suppliers/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Поставщики"
                 ],
@@ -1013,6 +1284,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Удаление поставщика по ID",
                 "tags": [
                     "Поставщики"
@@ -1063,6 +1339,11 @@ const docTemplate = `{
         },
         "/suppliers/{id}/address": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Поставщики"
                 ],
@@ -1375,6 +1656,86 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "handler.AuthRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ChangePasswordRequest": {
+            "type": "object",
+            "properties": {
+                "new": {
+                    "type": "string"
+                },
+                "old": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RecoverPasswordRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RecoverPasswordResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RegisterRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer \" followed by your token",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

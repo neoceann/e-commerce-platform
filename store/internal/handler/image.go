@@ -25,6 +25,7 @@ func NewImageHandler(imageService service.ImageService) *ImageHandler {
 // @Summary      Создание изображения
 // @Description  Добавляет новое изображение в систему
 // @Tags	     Изображения товаров
+// @Security     BearerAuth
 // @Param        request body dto.CreateImageRequest true "Данные изображение"
 // @Success      201 {object} domain.Image "Изображение создано"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -54,6 +55,7 @@ func (h *ImageHandler) CreateImage(w http.ResponseWriter, r *http.Request) {
 // @Summary      Удаление изображение
 // @Description  Удаление изображение по ID
 // @Tags	     Изображения товаров
+// @Security     BearerAuth
 // @Param        id path string true "UUID изображения"
 // @Success      204 "Изображение удалено"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -91,6 +93,7 @@ func (h *ImageHandler) DeleteImage(w http.ResponseWriter, r *http.Request) {
 
 // @Summary      Получить изображение по его ID
 // @Tags	     Изображения товаров
+// @Security     BearerAuth
 // @Param        id path string true "UUID изображения"
 // @Produce      application/octet-stream
 // @Success      200 file binary "Изображение успешно получено"
@@ -127,6 +130,7 @@ func (h *ImageHandler) GetImageByID(w http.ResponseWriter, r *http.Request) {
 // @Summary      Получить список изображений по ID товара
 // @Description  Для скачивания требуется запрашивать каждый ID отдельно (GET /images/{id})
 // @Tags	     Изображения товаров
+// @Security     BearerAuth
 // @Param        id path string true "UUID товара"
 // @Success      200 "Данные успешно получены"
 // @Failure      400 {object} map[string]string "Неверный запрос"
@@ -165,6 +169,7 @@ func (h *ImageHandler) GetImagesByProductID(w http.ResponseWriter, r *http.Reque
 
 // @Summary      Обновить изображение
 // @Tags	     Изображения товаров
+// @Security     BearerAuth
 // @Param		 id path string true "UUID изображения"
 // @Param        request body dto.UpdateImageRequest true "Новое изображение (base64)"
 // @Success      200 "Данные успешно обновлены"

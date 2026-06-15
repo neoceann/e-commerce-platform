@@ -8,6 +8,7 @@ import (
 	"go.uber.org/fx"
 	"net/http"
 	"store/internal/handler"
+	m "store/internal/handler/middleware"
 )
 
 type RouterParams struct {
@@ -20,6 +21,7 @@ type RouterParams struct {
 	ProductHandler  *handler.ProductHandler
 	AddressHandler  *handler.AddressHandler
 	AuthHadler		*handler.AuthHandler
+	Middleware		*m.AuthMiddleware
 }
 
 func NewRouter(p RouterParams) http.Handler {
@@ -50,7 +52,14 @@ func NewRouter(p RouterParams) http.Handler {
 		httpSwagger.URL("/swagger/doc.json"),
 	))
 
+	r.Post("/register", p.AuthHadler.Register)
+	r.Post("/auth", p.AuthHadler.Auth)
+	r.Post("/recover", p.AuthHadler.Recover)
+
+
 	r.Route("/api/v1", func(r chi.Router) {
+		r.Use(p.Middleware.Authenticate)
+		
 		r.Route("/clients", func(r chi.Router) {
 			r.Post("/", p.ClientHandler.CreateClient)
 			r.Delete("/{id}", p.ClientHandler.DeleteClient)
@@ -87,9 +96,6 @@ func NewRouter(p RouterParams) http.Handler {
 		r.Route("/addresses", func(r chi.Router) {
 			r.Get("/{id}", p.AddressHandler.GetAddressByID)
 		})
-		r.Post("/register", p.AuthHadler.Register)
-		r.Post("/auth", p.AuthHadler.Auth)
-		r.Post("/recover", p.AuthHadler.Recover)
 	})
 
 	return r

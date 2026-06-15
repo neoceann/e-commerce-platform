@@ -43,13 +43,7 @@ func (a *AuthServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.AuthR
 }
 
 func (a *AuthServer) ChangePassword(ctx context.Context, req *pb.ChangePasswordRequest) (*pb.ChangePasswordResponse, error) {
-	claims, err := a.authService.ValidateToken(ctx, &service.ValidateTokenRequest{Token: req.Token})
-
-	if err != nil {
-		return &pb.ChangePasswordResponse{Success: false, Message: err.Error()}, nil
-	}
-
-	err = a.authService.ChangePassword(ctx, &service.ChangePasswordRequest{UserID: claims.ID, OldPassword: req.OldPassword, NewPassword: req.NewPassword})
+	err := a.authService.ChangePassword(ctx, &service.ChangePasswordRequest{UserID: req.UserId, OldPassword: req.OldPassword, NewPassword: req.NewPassword})
 
 	if err != nil {
 		return &pb.ChangePasswordResponse{Success: false, Message: err.Error()}, nil

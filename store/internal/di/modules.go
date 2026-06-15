@@ -11,6 +11,7 @@ import (
 	"store/internal/config"
 	"store/internal/grpc"
 	"store/internal/handler"
+	"store/internal/handler/middleware"
 	address_repo "store/internal/repository/address"
 	category_repo "store/internal/repository/category"
 	client_repo "store/internal/repository/client"
@@ -53,6 +54,7 @@ var Module = fx.Options(
 	fx.Provide(product_service.NewProductService),
 	fx.Provide(address_service.NewAddressService),
 
+	fx.Provide(middleware.NewAuthMiddleware),
 	fx.Provide(handler.NewClientHandler),
 	fx.Provide(handler.NewSupplierHandler),
 	fx.Provide(handler.NewImageHandler),

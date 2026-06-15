@@ -6,6 +6,7 @@ import (
 
 	"store/internal/grpc"
 	"store/internal/grpc/pb"
+	"store/internal/handler/middleware"
 )
 
 type AuthHandler struct {
@@ -43,6 +44,37 @@ type RecoverPasswordRequest struct {
 
 type RecoverPasswordResponse struct {
 	Message string
+}
+
+type ChangePasswordRequest struct {
+	OldPassword string
+	NewPassword string
+}
+
+func (h *AuthHandler) Change(w http.ResponseWriter, r *http.Request) {
+	var req ChangePasswordRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid request")
+		return
+    }
+
+	userid, ok := middleware.GetUserID(r.Context())
+
+	if !ok {
+		writeError(w, http.StatusBadRequest, "cant get userId")
+	}
+
+	resp, err := h.authClient.GetClient().ChangePassword(r.Context(), &pb.ChangePasswordRequest{UserId: userid, OldPassword: req.OldPassword, NewPassword: req.NewPassword})
+
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, err.Error())
+	}
+
+	if !resp.Success {
+		writeError(w, http.StatusBadRequest, resp.Message)
+	}
+
+	writeJSON(w, http.StatusOK, resp.Message)
 }
 
 func (h *AuthHandler) Recover(w http.ResponseWriter, r *http.Request) {

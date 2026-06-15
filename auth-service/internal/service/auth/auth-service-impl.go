@@ -1,12 +1,17 @@
 package service
 
 import (
-    "context"
-    "fmt"
-    
-    "auth-service/internal/repository/db"
-    "auth-service/pkg/jwt"
-    "auth-service/pkg/password"
+	"context"
+	"crypto/rand"
+	"encoding/hex"
+	"fmt"
+	"log"
+
+	"auth-service/internal/repository/db"
+	"auth-service/pkg/jwt"
+	"auth-service/pkg/password"
+
+	"github.com/google/uuid"
 )
 
 type authService struct {
@@ -59,17 +64,95 @@ func (a *authService) Register(ctx context.Context, register *RegisterRequest) (
 }
 	
 func (a *authService) Login(ctx context.Context, login *LoginRequest) (*AuthResponse, error) {
-	
+	user, err := a.userRepo.GetUserByEmail(ctx, login.Email)
+
+	if err != nil {
+		return nil, ErrCredentialsInvalid
+	}
+
+	if !a.passwordService.Verify(user.PasswordHash, login.Password) {
+		return nil, ErrCredentialsInvalid
+	}
+
+	token, err := a.jwtService.GenerateToken(user.ID.String(), user.Email, user.UserRole)
+
+	if err != nil {
+		return nil, fmt.Errorf("generate jwt token error: %w", err)
+	}
+
+	return &AuthResponse{Token: token, UserId: user.ID.String()}, nil
 }
 	
 func (a *authService) ChangePassword(ctx context.Context, change *ChangePasswordRequest) error {
-	
+	uid, err := uuid.Parse(change.UserID)
+	if err != nil {
+		return fmt.Errorf("parse uuid error: %w", err)
+	}
+	user, err := a.userRepo.GetUserByID(ctx, uid)
+
+	if err != nil {
+		return ErrUserNotFound
+	}
+
+	if !a.passwordService.Verify(user.PasswordHash, change.OldPassword) {
+		return ErrInvalidOldPwd
+	}
+
+	newPwd, err := a.passwordService.Hash(change.NewPassword)
+
+	if err != nil {
+		return fmt.Errorf("hash passoword error: %w", err)
+	}
+
+	return a.userRepo.UpdatePassword(ctx, db.UpdatePasswordParams{ID: user.ID, PasswordHash: newPwd})
 }
 	
 func (a *authService) RecoverPassword(ctx context.Context, recover *RecoverPasswordRequest) (*RecoverPasswordResponse, error) {
-	
-}
-	
-func (a *authService) ValidateToken(ctx context.Context, validate *ValidateTokenRequest) (*jwt.Claims, error) {
+	user, err := a.userRepo.GetUserByEmail(ctx, recover.Email)
 
+	if err != nil {
+		return nil, ErrUserNotFound
+	}
+
+	temp, err := generateRandomPassword(10)
+
+	if err != nil {
+		return nil, fmt.Errorf("generate temp password error: %w", err)
+	}
+
+	hashed, err := a.passwordService.Hash(temp)
+
+	if err != nil {
+		return nil, fmt.Errorf("hash temp password error: %w", err)
+	}
+
+	err = a.userRepo.UpdatePassword(ctx, db.UpdatePasswordParams{ID: user.ID, PasswordHash: hashed})
+
+	if err != nil {
+		return nil, fmt.Errorf("update temp password error: %w", err)
+	}
+
+	log.Printf("PASSWORD RECOVERING FOR USER: %s. NewTemporary password: %s", user.Email, temp)
+
+	return &RecoverPasswordResponse{ImitationNewPassword: temp}, nil
+
+}
+
+func generateRandomPassword(length int) (string, error) {
+	bytes := make([]byte, length)
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(bytes), nil
+}
+
+func (a *authService) ValidateToken(ctx context.Context, validate *ValidateTokenRequest) (*jwt.Claims, error) {
+	claims, err := a.jwtService.ValidateToken(validate.Token)
+
+	if err != nil {
+		return nil, ErrTokenInvalid
+	}
+
+	return claims, nil
 }

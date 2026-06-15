@@ -27,7 +27,7 @@ type LoginRequest struct {
 }
 
 type ChangePasswordRequest struct {
-	Token	string
+	UserID	string
 	OldPassword	string
 	NewPassword	string
 }

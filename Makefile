@@ -1,27 +1,15 @@
 # Makefile
-.PHONY: proto clean-proto sqlc swag run build
-
 AUTH_DIR=./auth-service
 STORE_DIR=./store
 SQLC_DIR=$(AUTH_DIR)/sqlc
 
-build:
-	cd $(AUTH_DIR) && go build -o build/auth ./cmd/auth/
-	cd $(STORE_DIR) && go build -o build/store ./cmd/api/
-
-run: build
-	cp .env $(AUTH_DIR)/build
-	cp .env $(STORE_DIR)/build
-	cd $(AUTH_DIR) && ./build/auth
-	cd $(STORE_DIR) && ./build/store
-
-dbuild: proto
+docker-build: proto
 	docker-compose build
 
-up: build
-	docker-compose up -d
+docker-up:
+	docker-compose up
 
-down:
+docker-down:
 	docker-compose down
 
 proto:
@@ -35,8 +23,15 @@ clean-proto:
 	rm -rf $(AUTH_DIR)/internal/grpc/pb/*.go
 	rm -rf $(STORE_DIR)/internal/grpc/pb/*.go
 
+docker-clean:
+	docker-compose down -v
+	docker system prune -f
+	
 swag:
 	swag init -g store/cmd/api/main.go -o store/docs
 
 sqlc:
 	cd $(SQLC_DIR) && sqlc generate
+
+
+.PHONY: proto clean-proto sqlc swag docker-build docker-up docker-down docker-clean

@@ -50,7 +50,7 @@ services:
       shop-db:
         condition: service_healthy
     volumes:
-      - ./shop-api/migrations:/migrations
+      - ./store/migrations:/migrations
     command: -path /migrations -database postgresql://shop_user:shop_pass@shop-db:5432/shop_db?sslmode=disable up
     restart: "no"
     networks:
@@ -73,8 +73,8 @@ services:
   
   auth-service:
     build:
-      context: .
-      dockerfile: auth-service/Dockerfile
+      context: ./auth-service
+      dockerfile: Dockerfile
     container_name: auth-service
     depends_on:
       auth-db:
@@ -99,8 +99,8 @@ services:
 
   shop-api:
     build:
-      context: .
-      dockerfile: store/Dockerfile
+      context: ./store
+      dockerfile: Dockerfile
     container_name: shop-api
     depends_on:
       shop-db:

@@ -18,7 +18,7 @@ type Config struct {
 	DBPort     string `env:"DB_PORT" env-default:"5432"`
 	DBUser     string `env:"DB_USER" env-default:"postgres"`
 	DBPassword string `env:"DB_PASSWORD" env-required:"true"`
-	DBName     string `env:"DB_NAME_STORE" env-default:"store"`
+	DBName     string `env:"DB_NAME" env-default:"store"`
 	DBSSLMode  string `env:"DB_SSL_MODE" env-default:"disable"`
 
 	ReadTimeout  time.Duration `env:"READ_TIMEOUT" env-default:"10s"`

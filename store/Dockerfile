@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o shop-api ./cmd/shop
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o shop-api ./cmd/api
 
 FROM alpine:latest
 

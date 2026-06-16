@@ -15,6 +15,8 @@ import (
 	"auth-service/internal/service/auth"
 	"auth-service/pkg/jwt"
 	"auth-service/pkg/password"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
@@ -51,6 +53,11 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
+
+	healthServer := health.NewServer()
+	healthServer.SetServingStatus("", grpc_health_v1.HealthCheckResponse_SERVING)
+	grpc_health_v1.RegisterHealthServer(grpcServer, healthServer)
+
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
 
 	reflection.Register(grpcServer)

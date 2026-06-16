@@ -13,7 +13,7 @@ services:
     volumes:
       - shop_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U shop_user"]
+      test: ["CMD-SHELL", "pg_isready -U shop_user -d shop_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -33,7 +33,7 @@ services:
     volumes:
       - auth_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U auth_user"]
+      test: ["CMD-SHELL", "pg_isready -U auth_user -d auth_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -88,7 +88,7 @@ services:
       DB_PASSWORD: auth_pass
       DB_NAME: auth_db
       GRPC_SERVER_PORT: 50051
-      JWT_SECRET: secret-key-change-in-production
+      JWT_SECRET: secret-key
       JWT_EXPIRATION_HOURS: 1
       BCRYPT_COST: 12
     ports:
@@ -116,6 +116,7 @@ services:
       DB_PASSWORD: shop_pass
       DB_NAME: shop_db
       AUTH_SERVICE_ADDR: auth-service:50051
+      SERVER_HOST: 0.0.0.0
       SERVER_PORT: 8080
     ports:
       - "8080:8080"

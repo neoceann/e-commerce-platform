@@ -3,11 +3,11 @@ AUTH_DIR=./auth-service
 STORE_DIR=./store
 SQLC_DIR=$(AUTH_DIR)/sqlc
 
-docker-build: proto
+docker-build: proto docker-clean
 	docker-compose build
 
 docker-up:
-	docker-compose up
+	docker-compose up -d
 
 docker-down:
 	docker-compose down

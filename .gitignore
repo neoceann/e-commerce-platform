@@ -5,7 +5,7 @@ store/*.md
 store/images
 store/build
 auth-service/build
-
+!*.env.example
 # Object files
 *.o
 *.ko

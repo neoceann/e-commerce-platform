@@ -53,6 +53,7 @@ func NewRouter(p RouterParams) http.Handler {
 	))
 
 	r.Route("/api/v1", func(r chi.Router) {
+		r.Get("/health", handler.HealthHandler)
 		r.Post("/register", p.AuthHandler.Register)
 		r.Post("/auth", p.AuthHandler.Auth)
 		r.Post("/recover", p.AuthHandler.Recover)

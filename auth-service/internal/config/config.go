@@ -14,7 +14,7 @@ type Config struct {
 	DBPort        string `env:"DB_PORT" env-default:"5432"`
 	DBUser        string `env:"DB_USER" env-default:"postgres"`
 	DBPassword    string `env:"DB_PASSWORD" env-required:"true"`
-	DBName        string `env:"DB_NAME" env-default:"auth"`
+	DBName        string `env:"DB_NAME_AUTH" env-default:"auth"`
 	DBSSLMode     string `env:"DB_SSL_MODE" env-default:"disable"`
 	GrpcPort      string `env:"GRPC_SERVER_PORT" env-default:"50051"`
 	JWTSecret     string `env:"JWT_SECRET"`

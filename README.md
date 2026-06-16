@@ -91,7 +91,7 @@
 
 `cd e-commerce-platform`
 
-### 2. Создать базы данных
+### 2. Создать базы данных 
 
 `CREATE DATABASE store;`
 
